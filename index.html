@@ -1920,6 +1920,13 @@
               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
               body: new URLSearchParams(formData).toString()
             });
+            if (resp.ok) {
+              overlay.style.display = 'block';
+              form.reset();
+              setTimeout(() => overlay.style.display = 'none', 5000);
+            } else alert('Form error, please email directly.');
+          } catch { alert('Network error.'); }
+        });
       }
 
       // certificate modal dummy
@@ -1932,4 +1939,3 @@
   <style> #formMessageOverlay { display: none; } </style>
 </body>
 </html>
-
