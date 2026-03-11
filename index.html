@@ -18,6 +18,7 @@
   <meta property="og:title" content="MUSONERA IRAHARI Junior (Mir Junior) | Website & Application Developer">
   <meta property="og:description" content="Official portfolio of MUSONERA IRAHARI Junior – Website & Application Developer in Rwanda. 2+ years, 40+ projects.">
   <meta property="og:image" content="/musonera-irahari-junior-profile2.jpg">
+  <meta property="og:image" content="/musonera-irahari-junior-profile.jpg">
   <meta property="og:url" content="https://iraharijunior.dev">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="MUSONERA IRAHARI Junior">
@@ -441,15 +442,9 @@
       padding: 8rem 0 4rem;
     }
 
+    /* Removed the radial gradient background animation that was covering the picture */
     .hero::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -10%;
-      width: 80%;
-      height: 200%;
-      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-      animation: rotate 30s linear infinite;
+      display: none;
     }
 
     .hero-container {
@@ -605,7 +600,7 @@
       transform: translateY(-3px);
     }
 
-    /* Hero Visual */
+    /* Hero Visual - Modified for circular images and removed morphing */
     .hero-visual {
       position: relative;
     }
@@ -619,29 +614,33 @@
       gap: 2rem;
     }
 
+    /* New circular frame - removed morphing, fixed circle */
     .profile-frame {
       position: relative;
-      width: 350px;
-      height: 350px;
-      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%; /* Perfect circle */
       background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
       padding: 6px;
-      animation: morphing 10s ease-in-out infinite;
+      /* Removed morphing animation */
+      box-shadow: var(--shadow-xl);
     }
 
     .profile-image {
       width: 100%;
       height: 100%;
-      border-radius: inherit;
+      border-radius: 50%; /* Match parent for circular clip */
       overflow: hidden;
       position: relative;
       cursor: pointer;
+      background: var(--bg-primary); /* fallback */
     }
 
     .profile-image img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
     }
 
     .profile-overlay {
@@ -650,6 +649,7 @@
       left: 0;
       width: 100%;
       height: 100%;
+      border-radius: 50%;
       background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3));
       backdrop-filter: blur(2px);
       display: flex;
@@ -666,6 +666,7 @@
       opacity: 1;
     }
 
+    /* School badge remains above floating cards */
     .school-badge {
       display: flex;
       align-items: center;
@@ -675,6 +676,8 @@
       border-radius: 40px;
       padding: 0.8rem 2rem;
       box-shadow: var(--shadow-lg);
+      margin-bottom: 1rem; /* space to next elements */
+      z-index: 5;
     }
 
     .school-badge i {
@@ -687,21 +690,39 @@
       color: var(--text-primary);
     }
 
+    /* Floating cards now positioned below badge using static block with flex row */
+    .floating-cards-row {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
     .floating-card {
-      position: absolute;
       background: var(--card-bg);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      padding: 16px 24px;
+      padding: 12px 24px;
       border-radius: 60px;
       border: 1px solid var(--border-color);
       font-weight: 600;
       box-shadow: var(--shadow-lg);
       color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .floating-card i {
+      color: var(--accent-primary);
     }
     
-    .card1 { top: 20px; right: 20px; }
-    .card2 { bottom: 40px; left: -20px; }
+    /* Remove absolute positioning of old cards */
+    .card1, .card2 {
+      position: static; /* override any absolute if left from old */
+    }
 
     .hero-scroll {
       position: absolute;
@@ -1503,11 +1524,6 @@
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
-    @keyframes morphing {
-      0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
-      50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; }
-      100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
-    }
     @keyframes scrollDown {
       0% { height: 60px; opacity: 1; }
       50% { height: 30px; opacity: 0.5; }
@@ -1622,18 +1638,29 @@
       
       <div class="hero-visual">
         <div class="profile-container">
+          <!-- Circular frame with rotating images -->
           <div class="profile-frame">
-            <div class="profile-image" id="profileImage">
-              <img src="musonera-irahari-junior-profile2.jpg" alt="MUSONERA IRAHARI Junior">
+            <div class="profile-image" id="rotatingProfile">
+              <img src="musonera-irahari-junior-profile2.jpg" alt="MUSONERA IRAHARI Junior - Profile 1" id="heroImage">
+              <!-- Overlay remains but hidden until hover -->
+              <div class="profile-overlay">
+                <i class="fas fa-code"></i>
+                <span>Full Stack Developer</span>
+              </div>
+            </div>
           </div>
+          <!-- Badge and cards reordered: badge first, then floating cards below -->
           <div class="school-badge">
-    <i class="fas fa-briefcase"></i>
-    <span>TeleTech Solutions • 2026</span>
-</div>
-        <div class="floating-card card1"><i class="fas fa-code"></i> Full‑Stack Dev</div>
-        <div class="floating-card card2"><i class="fas fa-cloud"></i> DevOps & Cloud</div>
+            <i class="fas fa-briefcase"></i>
+            <span>TeleTech Solutions • 2026</span>
+          </div>
+          <!-- Floating cards now in a row below the badge -->
+          <div class="floating-cards-row">
+            <div class="floating-card"><i class="fas fa-code"></i> Full‑Stack Dev</div>
+            <div class="floating-card"><i class="fas fa-cloud"></i> DevOps & Cloud</div>
+          </div>
+        </div>
       </div>
-    </div>
     <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
   </section>
 
@@ -1900,7 +1927,6 @@
         });
       });
 
-     
       // Welcome notification disappear
       setTimeout(() => {
         let msg = document.getElementById('welcomeMsg');
@@ -1934,11 +1960,23 @@
         alert('✅ Certificate download simulated.');
         document.getElementById('certModal').style.display='none';
       });
+
+      // ===== Rotating profile images (2 pictures, circular, change every 10 seconds) =====
+      const heroImage = document.getElementById('heroImage');
+      if (heroImage) {
+        // Array of image sources (using existing local image and an unsplash placeholder as second)
+        const images = [
+          'musonera-irahari-junior-profile2.jpg',
+          'https://images.unsplash.com/photo-1549692520-acc6669e2f0c?w=400&h=400&fit=crop'  // another professional headshot style
+        ];
+        let currentIndex = 0;
+        setInterval(() => {
+          currentIndex = (currentIndex + 1) % images.length;
+          heroImage.src = images[currentIndex];
+        }, 10000); // 10 seconds
+      }
     });
   </script>
   <style> #formMessageOverlay { display: none; } </style>
 </body>
 </html>
-
-
-
